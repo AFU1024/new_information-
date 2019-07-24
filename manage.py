@@ -1,6 +1,11 @@
-from flask import Flask
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
+from info import create_app, db
 
-app = Flask(__name__)
+app = create_app('develop')
+manage = Manager(app)
+Migrate(app, db)
+manage.add_command("db", MigrateCommand)
 
 
 @app.route("/")
@@ -9,4 +14,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    manage.run()
